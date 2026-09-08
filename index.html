@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vienalapa — small websites for small businesses</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="Simple, fast, hand-built websites for small businesses. In Latvian, Russian or English.">
+<meta name="theme-color" content="#16212E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --slate:      #16212E;
+  --slate-lift: #1F2E3D;
+  --paper:      #FFFFFF;
+  --mist:       #F4F7F9;
+  --line:       #DCE3E9;
+
+  --brass:      #D9A227;   /* on dark only */
+  --brass-ink:  #8A6412;   /* brass-toned text on light */
+
+  --text-dark:  #16212E;
+  --text-muted: #5A6875;
+  --text-light: #D3DDE5;
+
+  --display: 'Unbounded', 'IBM Plex Sans', system-ui, sans-serif;
+  --body:    'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --stack:  clamp(4rem, 9vw, 7rem);
+
+  --hex: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+body {
+  margin: 0;
+  font-family: var(--body);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
+  line-height: 1.65;
+  color: var(--text-dark);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .logo {
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0 0 1em; max-width: 60ch; }
+p:last-child { margin-bottom: 0; }
+a { color: inherit; }
+
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+
+.wrap { padding-inline: var(--gutter); max-width: 82rem; margin-inline: auto; }
+.section { padding-block: var(--stack); }
+
+/* ============ honeycomb field ============ */
+
+.honeycomb {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='48.5' height='84' viewBox='0 0 48.5 84'>\
+<g fill='none' stroke='%23D9A227' stroke-width='1.1' stroke-opacity='0.16'>\
+<path d='M0,-28 L24.25,-14 L24.25,14 L0,28 L-24.25,14 L-24.25,-14Z'/>\
+<path d='M48.5,-28 L72.75,-14 L72.75,14 L48.5,28 L24.25,14 L24.25,-14Z'/>\
+<path d='M0,56 L24.25,70 L24.25,98 L0,112 L-24.25,98 L-24.25,70Z'/>\
+<path d='M48.5,56 L72.75,70 L72.75,98 L48.5,112 L24.25,98 L24.25,70Z'/>\
+<path d='M24.25,14 L48.5,28 L48.5,56 L24.25,70 L0,56 L0,28Z'/>\
+<path d='M24.25,-70 L48.5,-56 L48.5,-28 L24.25,-14 L0,-28 L0,-56Z'/>\
+<path d='M24.25,98 L48.5,112 L48.5,140 L24.25,154 L0,140 L0,112Z'/>\
+</g></svg>");
+  pointer-events: none;
+}
+
+/* ============ dark panels ============ */
+
+.dark {
+  position: relative;
+  overflow: hidden;
+  background: var(--slate);
+  color: var(--text-light);
+}
+.dark h1, .dark h2, .dark h3 { color: var(--paper); }
+.dark .wrap { position: relative; }
+
+/* ============ top bar ============ */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+  padding-block: 1.5rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--paper);
+}
+.logo-mark { inline-size: 1.45rem; block-size: 1.67rem; display: block; flex: none; }
+
+/* language switch */
+
+.langs { display: flex; gap: .4rem; }
+
+.lang {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: .92rem;
+  letter-spacing: .06em;
+  padding: .55rem 1.1rem;
+  border: 1.5px solid rgba(211, 221, 229, .35);
+  border-radius: .4rem;
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+.lang:hover { border-color: var(--brass); }
+.lang[aria-pressed="true"] {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--slate);
+}
+
+/* ============ hero ============ */
+
+.hero { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(4rem, 9vw, 7rem); }
+
+.hero-grid { display: grid; gap: 3rem; align-items: center; }
+@media (min-width: 62rem) {
+  .hero-grid { grid-template-columns: 1.35fr .65fr; }
+}
+
+.hero h1 {
+  font-size: clamp(2.1rem, 6.2vw, 4.15rem);
+  max-width: 17ch;
+  margin-bottom: 1.4rem;
+}
+
+.hero-lede {
+  font-size: clamp(1.05rem, 1rem + 0.4vw, 1.28rem);
+  max-width: 44ch;
+  color: var(--text-light);
+  margin-bottom: 2.25rem;
+}
+
+/* hex cluster */
+.cluster { display: none; }
+@media (min-width: 62rem) {
+  .cluster {
+    display: grid;
+    grid-template-columns: repeat(2, 7rem);
+    justify-content: center;
+    gap: .6rem;
+  }
+  .cluster span {
+    display: block;
+    block-size: 8rem;
+    clip-path: var(--hex);
+    background: var(--slate-lift);
+    border: 0;
+  }
+  .cluster span:nth-child(1) { background: var(--brass); }
+  .cluster span:nth-child(2) { transform: translateY(4.3rem); }
+  .cluster span:nth-child(3) { background: var(--slate-lift); }
+  .cluster span:nth-child(4) { transform: translateY(4.3rem); background: rgba(217,162,39,.28); }
+}
+
+/* language swap */
+[data-i18n] { transition: opacity .18s ease, transform .18s ease; }
+.swapping [data-i18n] { opacity: 0; transform: translateY(5px); }
+
+/* ============ buttons ============ */
+
+.btn {
+  display: inline-block;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: .95rem 1.9rem;
+  border: 1.5px solid var(--brass);
+  border-radius: .4rem;
+  background: var(--brass);
+  color: var(--slate);
+  cursor: pointer;
+  transition: transform .12s ease, background-color .15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-quiet {
+  background: transparent;
+  color: var(--text-light);
+  border-color: rgba(211, 221, 229, .4);
+}
+.btn-quiet:hover { border-color: var(--brass); }
+
+/* ============ headings ============ */
+
+.section h2 {
+  font-size: clamp(1.7rem, 4.2vw, 2.7rem);
+  max-width: 20ch;
+  margin-bottom: 2.5rem;
+}
+
+/* ============ services ============ */
+
+.services {
+  display: grid;
+  gap: 2.25rem 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.service { padding-block-start: 1.5rem; border-block-start: 2px solid var(--line); }
+.service h3 { font-size: 1.2rem; margin-bottom: .6rem; }
+.service p { color: var(--text-muted); font-size: .98rem; max-width: 34ch; }
+
+.marker {
+  display: block;
+  inline-size: 1.4rem;
+  block-size: 1.6rem;
+  clip-path: var(--hex);
+  background: var(--brass-ink);
+  margin-bottom: 1rem;
+}
+.service:nth-child(2) .marker { background: var(--slate); }
+.service:nth-child(3) .marker { background: var(--brass-ink); opacity: .45; }
+.service:nth-child(4) .marker { background: var(--slate); opacity: .35; }
+
+/* ============ work ============ */
+
+.work-panel { border-radius: 1rem; padding: clamp(1.5rem, 4.5vw, 3.25rem); }
+.work-grid { display: grid; gap: 2.25rem; align-items: center; }
+@media (min-width: 58rem) { .work-grid { grid-template-columns: 1fr 1.1fr; } }
+
+.work-grid h3 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: .9rem; }
+.work-grid p { color: var(--text-light); margin-bottom: 1.75rem; }
+
+.eyebrow {
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--brass);
+  margin-bottom: .75rem;
+}
+
+.frame {
+  border-radius: .6rem;
+  overflow: hidden;
+  border: 1.5px solid rgba(217,162,39,.35);
+  background: var(--paper);
+  aspect-ratio: 4 / 3;
+}
+.frame iframe { inline-size: 100%; block-size: 100%; border: 0; display: block; }
+
+/* ============ steps ============ */
+
+.steps { list-style: none; counter-reset: step; margin: 0; padding: 0; max-width: 48rem; }
+
+.step {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 1.25rem;
+  padding-block: 1.6rem;
+  border-block-start: 1.5px solid var(--line);
+  align-items: start;
+}
+.step:last-child { border-block-end: 1.5px solid var(--line); }
+.step::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  inline-size: 2.4rem;
+  block-size: 2.75rem;
+  clip-path: var(--hex);
+  background: var(--slate);
+  color: var(--brass);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.step h3 { font-size: 1.15rem; margin-bottom: .3rem; }
+.step p { color: var(--text-muted); }
+
+/* ============ honesty ============ */
+
+.honest {
+  background: var(--mist);
+  border-inline-start: 4px solid var(--brass-ink);
+  border-radius: .3rem;
+  padding: clamp(1.5rem, 4.5vw, 2.75rem);
+  max-width: 48rem;
+}
+.honest h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); margin-bottom: 1.1rem; }
+.honest p { color: var(--text-muted); }
+.honest p + p { margin-block-start: 1em; }
+
+/* ============ contact ============ */
+
+.contact { text-align: center; padding-block: var(--stack); }
+.contact h2 { margin-inline: auto; }
+.contact p { margin-inline: auto; color: var(--text-light); }
+
+.addr { font-size: .92rem; color: var(--text-light); opacity: .8; margin-block-start: 1.25rem; }
+.addr a { text-decoration-color: var(--brass); text-underline-offset: 3px; }
+
+.channels { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-block-start: 2.25rem; }
+
+/* ============ footer ============ */
+
+.foot {
+  padding-block: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.5rem;
+  justify-content: space-between;
+  font-size: .88rem;
+  color: var(--text-muted);
+  border-block-start: 1.5px solid var(--line);
+}
+</style>
+</head>
+
+<body>
+
+<div class="dark" id="top">
+  <div class="honeycomb" aria-hidden="true"></div>
+
+  <header class="wrap topbar">
+    <a class="logo" href="#top">
+      <svg class="logo-mark" viewBox="0 0 100 115" aria-hidden="true" focusable="false">
+        <path d="M50,0 L66,9.2 L100,72 L100,86.25 L50,115 L0,86.25 L0,28.75 Z" fill="#D9A227"/>
+        <path d="M66,9.2 L100,28.75 L100,72 Z" fill="#F2CE73"/>
+      </svg>
+      <span>vienalapa</span>
+    </a>
+    <div class="langs" role="group" aria-label="Language / Valoda / Язык">
+      <button class="lang" data-lang="lv" aria-pressed="false">LV</button>
+      <button class="lang" data-lang="ru" aria-pressed="false">RU</button>
+      <button class="lang" data-lang="en" aria-pressed="true">EN</button>
+    </div>
+  </header>
+
+  <section class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <h1 data-i18n="heroTitle">I make small websites for small businesses.</h1>
+        <p class="hero-lede" data-i18n="heroLede">One page that loads fast, works properly on a phone, and is written in your language. Built by hand, not dragged out of a template.</p>
+        <a class="btn" href="#contact" data-i18n="heroCta">Write to me</a>
+      </div>
+      <div class="cluster" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </div>
+  </section>
+</div>
+
+<main>
+
+  <section class="wrap section">
+    <h2 data-i18n="servicesTitle">What I can make for you</h2>
+    <div class="services">
+      <div class="service">
+        <span class="marker" aria-hidden="true"></span>
+        <h3 data-i18n="s1Title">A one-page site</h3>
+        <p data-i18n="s1Body">Who you are, what you do, what it costs, and how to reach you. The site most small businesses actually need — and the one most of them don't have.</p>
+      </div>
+      <div class="service">
+        <span class="marker" aria-hidden="true"></span>
+        <h3 data-i18n="s2Title">A page for one service</h3>
+        <p data-i18n="s2Body">You already have a site, but you're advertising one thing and need somewhere to send people.</p>
+      </div>
+      <div class="service">
+        <span class="marker" aria-hidden="true"></span>
+        <h3 data-i18n="s3Title">A calculator or small tool</h3>
+        <p data-i18n="s3Body">Customers work out a price or a quantity themselves, and you stop answering the same question by phone.</p>
+      </div>
+      <div class="service">
+        <span class="marker" aria-hidden="true"></span>
+        <h3 data-i18n="s4Title">A tidy-up</h3>
+        <p data-i18n="s4Body">Your site works but looks dated, or falls apart on a phone. Often the cheapest thing to fix.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="dark work-panel">
+      <div class="honeycomb" aria-hidden="true"></div>
+      <div class="work-grid" style="position:relative">
+        <div>
+          <div class="eyebrow" data-i18n="workEyebrow">Live, in use</div>
+          <h3 data-i18n="workName">Construction Calculator</h3>
+          <p data-i18n="workBody">Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up, and it's built to be used on a phone with cold hands.</p>
+          <a class="btn" href="https://kris3-5.github.io/Construction-Calculator/" target="_blank" rel="noopener" data-i18n="workCta">Open it</a>
+        </div>
+        <div class="frame">
+          <iframe src="https://kris3-5.github.io/Construction-Calculator/" title="Construction Calculator" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <h2 data-i18n="howTitle">How it works</h2>
+    <ol class="steps">
+      <li class="step"><div>
+        <h3 data-i18n="h1Title">You tell me what it needs to say</h3>
+        <p data-i18n="h1Body">An email is enough. What you do, who you do it for, and anything you already know you want on the page.</p>
+      </div></li>
+      <li class="step"><div>
+        <h3 data-i18n="h2Title">I send you a draft</h3>
+        <p data-i18n="h2Body">Usually within a week. You look at it on your own phone, on a real link.</p>
+      </div></li>
+      <li class="step"><div>
+        <h3 data-i18n="h3Title">You tell me what to change</h3>
+        <p data-i18n="h3Body">Two rounds of changes are included in the price.</p>
+      </div></li>
+      <li class="step"><div>
+        <h3 data-i18n="h4Title">It goes live on your own address</h3>
+        <p data-i18n="h4Body">The domain is registered in your name and stays yours. I show you how to change the text yourself.</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <section class="wrap section">
+    <div class="honest">
+      <h2 data-i18n="honestTitle">Read this before you write to me</h2>
+      <p data-i18n="honestBody1">I have a full-time job. I do this in the evenings because I enjoy it, which is why it costs what it costs. I usually reply within two days.</p>
+      <p data-i18n="honestBody2">If you need someone on call, an online shop, or a site with fifty pages, I'm not the right person and I'll tell you so straight away.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="dark" id="contact">
+  <div class="honeycomb" aria-hidden="true"></div>
+  <section class="wrap contact">
+    <h2 data-i18n="contactTitle">Tell me what you need</h2>
+    <p data-i18n="contactBody">Write in Latvian, Russian or English. Say what your business does and what you want the site to do. That's enough to start.</p>
+    <div class="channels">
+      <a class="btn" id="mailBtn" href="#" data-i18n="contactCta">Send email</a>
+    </div>
+    <p class="addr">
+      <span data-i18n="addrLabel">Or write to</span>
+      <a id="mailPlain" href="#">&nbsp;</a>
+    </p>
+  </section>
+</div>
+
+<footer class="wrap foot">
+  <span>© <span id="year"></span> vienalapa</span>
+  <span data-i18n="footNote">Built by hand in the UK and Latvia.</span>
+</footer>
+
+<script>
+const COPY = {
+  en: {
+    heroTitle: "I make small websites for small businesses.",
+    heroLede: "One page that loads fast, works properly on a phone, and is written in your language. Built by hand, not dragged out of a template.",
+    heroCta: "Write to me",
+    servicesTitle: "What I can make for you",
+    s1Title: "A one-page site",
+    s1Body: "Who you are, what you do, what it costs, and how to reach you. The site most small businesses actually need — and the one most of them don't have.",
+    s2Title: "A page for one service",
+    s2Body: "You already have a site, but you're advertising one thing and need somewhere to send people.",
+    s3Title: "A calculator or small tool",
+    s3Body: "Customers work out a price or a quantity themselves, and you stop answering the same question by phone.",
+    s4Title: "A tidy-up",
+    s4Body: "Your site works but looks dated, or falls apart on a phone. Often the cheapest thing to fix.",
+    workEyebrow: "Live, in use",
+    workName: "Construction Calculator",
+    workBody: "Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up, and it's built to be used on a phone with cold hands.",
+    workCta: "Open it",
+    howTitle: "How it works",
+    h1Title: "You tell me what it needs to say",
+    h1Body: "An email is enough. What you do, who you do it for, and anything you already know you want on the page.",
+    h2Title: "I send you a draft",
+    h2Body: "Usually within a week. You look at it on your own phone, on a real link.",
+    h3Title: "You tell me what to change",
+    h3Body: "Two rounds of changes are included in the price.",
+    h4Title: "It goes live on your own address",
+    h4Body: "The domain is registered in your name and stays yours. I show you how to change the text yourself.",
+    honestTitle: "Read this before you write to me",
+    honestBody1: "I have a full-time job. I do this in the evenings because I enjoy it, which is why it costs what it costs. I usually reply within two days.",
+    honestBody2: "If you need someone on call, an online shop, or a site with fifty pages, I'm not the right person and I'll tell you so straight away.",
+    contactTitle: "Tell me what you need",
+    contactBody: "Write in Latvian, Russian or English. Say what your business does and what you want the site to do. That's enough to start.",
+    contactCta: "Send email",
+    addrLabel: "Or write to",
+    mailSubject: "Website enquiry",
+    footNote: "Built by hand in the UK and Latvia."
+  },
+
+  lv: {
+    heroTitle: "Es veidoju mazas mājaslapas maziem uzņēmumiem.",
+    heroLede: "Viena lapa, kas ātri ielādējas, normāli darbojas telefonā un ir uzrakstīta jūsu valodā. Veidota ar rokām, nevis izvilkta no veidnes.",
+    heroCta: "Rakstiet man",
+    servicesTitle: "Ko es varu jums izveidot",
+    s1Title: "Vienas lapas mājaslapa",
+    s1Body: "Kas jūs esat, ko darāt, cik tas maksā un kā ar jums sazināties. Tieši tā lapa, kas vajadzīga lielākajai daļai mazo uzņēmumu — un kuras lielākajai daļai nav.",
+    s2Title: "Lapa vienam pakalpojumam",
+    s2Body: "Mājaslapa jums jau ir, bet reklamējat vienu konkrētu lietu, un vajag, kurp cilvēkus aizsūtīt.",
+    s3Title: "Kalkulators vai neliels rīks",
+    s3Body: "Klienti paši aprēķina cenu vai daudzumu, un jums vairs nav pa telefonu jāatbild uz vienu un to pašu jautājumu.",
+    s4Title: "Sakārtošana",
+    s4Body: "Mājaslapa strādā, bet izskatās novecojusi vai jūk ārā telefonā. Bieži vien lētākais risinājums.",
+    workEyebrow: "Strādā jau tagad",
+    workName: "Būvniecības kalkulators",
+    workBody: "Betona, mūrēšanas un flīzēšanas kalkulatori tiem, kas strādā objektā. Trīs valodas, metriskās vienības, bez reģistrēšanās, un veidots lietošanai telefonā ar aukstām rokām.",
+    workCta: "Atvērt",
+    howTitle: "Kā tas notiek",
+    h1Title: "Jūs pastāstāt, kas lapā jāpasaka",
+    h1Body: "Pietiek ar e-pastu. Ko darāt, kam to darāt un ko jau tagad zināt, ka lapā vajadzētu būt.",
+    h2Title: "Es atsūtu melnrakstu",
+    h2Body: "Parasti nedēļas laikā. Jūs to apskatāt savā telefonā, pa īstu saiti.",
+    h3Title: "Jūs pasakāt, kas jāmaina",
+    h3Body: "Divas labojumu kārtas ir iekļautas cenā.",
+    h4Title: "Lapa sāk darboties jūsu adresē",
+    h4Body: "Domēns tiek reģistrēts uz jūsu vārda un paliek jums. Es parādu, kā pašam nomainīt tekstu.",
+    honestTitle: "Izlasiet, pirms rakstāt",
+    honestBody1: "Man ir pamatdarbs. Ar šo nodarbojos vakaros, jo man patīk — tāpēc arī cena ir tāda, kāda ir. Parasti atbildu divu dienu laikā.",
+    honestBody2: "Ja jums vajag cilvēku, kas pieejams jebkurā brīdī, interneta veikalu vai lapu ar piecdesmit sadaļām, es neesmu īstais, un es to pateikšu uzreiz.",
+    contactTitle: "Pastāstiet, kas jums vajadzīgs",
+    contactBody: "Rakstiet latviski, krieviski vai angliski. Pasakiet, ar ko jūsu uzņēmums nodarbojas un ko lapai vajadzētu darīt. Ar to pietiek, lai sāktu.",
+    contactCta: "Rakstīt e-pastu",
+    addrLabel: "Vai rakstiet uz",
+    mailSubject: "Jautājums par mājaslapu",
+    footNote: "Veidots ar rokām Lielbritānijā un Latvijā."
+  },
+
+  ru: {
+    heroTitle: "Я делаю небольшие сайты для небольшого бизнеса.",
+    heroLede: "Одна страница, которая быстро загружается, нормально работает на телефоне и написана на вашем языке. Собрана вручную, а не вытащена из шаблона.",
+    heroCta: "Напишите мне",
+    servicesTitle: "Что я могу для вас сделать",
+    s1Title: "Сайт на одну страницу",
+    s1Body: "Кто вы, чем занимаетесь, сколько это стоит и как с вами связаться. Именно такой сайт нужен большинству небольших фирм — и именно его у большинства нет.",
+    s2Title: "Страница под одну услугу",
+    s2Body: "Сайт у вас уже есть, но вы рекламируете что-то одно, и нужно место, куда направлять людей.",
+    s3Title: "Калькулятор или небольшой инструмент",
+    s3Body: "Клиенты сами считают цену или количество, и вам больше не приходится отвечать по телефону на один и тот же вопрос.",
+    s4Title: "Привести в порядок",
+    s4Body: "Сайт работает, но выглядит устаревшим или разваливается на телефоне. Часто это самое дешёвое, что можно исправить.",
+    workEyebrow: "Работает прямо сейчас",
+    workName: "Строительный калькулятор",
+    workBody: "Калькуляторы бетона, кладки и плитки для тех, кто работает на объекте. Три языка, метрические единицы, без регистрации, и рассчитан на работу с телефона замёрзшими руками.",
+    workCta: "Открыть",
+    howTitle: "Как это происходит",
+    h1Title: "Вы рассказываете, что должно быть на сайте",
+    h1Body: "Достаточно письма. Чем вы занимаетесь, для кого, и что уже точно должно быть на странице.",
+    h2Title: "Я присылаю черновик",
+    h2Body: "Обычно в течение недели. Вы смотрите его на своём телефоне, по настоящей ссылке.",
+    h3Title: "Вы говорите, что поменять",
+    h3Body: "Два круга правок входят в цену.",
+    h4Title: "Сайт открывается на вашем адресе",
+    h4Body: "Домен оформляется на вас и остаётся вашим. Я показываю, как самому менять текст.",
+    honestTitle: "Прочитайте, прежде чем писать",
+    honestBody1: "У меня есть основная работа. Этим я занимаюсь по вечерам, потому что мне это нравится — отсюда и цена. Обычно отвечаю в течение двух дней.",
+    honestBody2: "Если нужен человек на связи круглосуточно, интернет-магазин или сайт на пятьдесят страниц — я не подхожу, и скажу об этом сразу.",
+    contactTitle: "Расскажите, что вам нужно",
+    contactBody: "Пишите по-латышски, по-русски или по-английски. Скажите, чем занимается ваша фирма и что сайт должен делать. Этого достаточно, чтобы начать.",
+    contactCta: "Написать письмо",
+    addrLabel: "Или пишите на",
+    mailSubject: "Вопрос про сайт",
+    footNote: "Сделано вручную в Великобритании и Латвии."
+  }
+};
+
+/* Split so the address isn't sitting in the HTML as plain text for harvesters.
+   Change these two lines and nothing else. */
+const MAIL_USER = "hello";
+const MAIL_HOST = "vienalapa.lv";
+const ADDRESS = MAIL_USER + String.fromCharCode(64) + MAIL_HOST;
+
+function wireMail(subject) {
+  const href = "mailto:" + ADDRESS + "?subject=" + encodeURIComponent(subject);
+  const btn = document.getElementById("mailBtn");
+  const plain = document.getElementById("mailPlain");
+  if (btn) btn.href = href;
+  if (plain) { plain.href = href; plain.textContent = ADDRESS; }
+}
+
+const buttons = document.querySelectorAll(".lang");
+const body = document.body;
+
+function setLanguage(lang, animate = true) {
+  const dict = COPY[lang];
+  if (!dict) return;
+
+  const apply = () => {
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key]) el.textContent = dict[key];
+    });
+    document.documentElement.lang = lang;
+    buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+    wireMail(dict.mailSubject);
+    body.classList.remove("swapping");
+  };
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (animate && !reduced) {
+    body.classList.add("swapping");
+    setTimeout(apply, 180);
+  } else {
+    apply();
+  }
+}
+
+buttons.forEach(b => b.addEventListener("click", () => setLanguage(b.dataset.lang)));
+
+let start = null;
+try { start = localStorage.getItem("lang"); } catch (e) {}
+if (!start) {
+  const nav = (navigator.language || "en").slice(0, 2).toLowerCase();
+  start = COPY[nav] ? nav : "en";
+}
+setLanguage(start, false);
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
