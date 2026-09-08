@@ -277,14 +277,22 @@ a { color: inherit; }
 
 .shot {
   display: block;
+  flex: none;                 /* never let the image absorb the squeeze */
+  aspect-ratio: 16 / 10;
   border-radius: .45rem;
   overflow: hidden;
   background: #0E1620;
   margin-bottom: .9rem;
 }
-.shot img { display: block; inline-size: 100%; block-size: auto; }
+.shot img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
 
 .tag {
+  flex: none;
   font-size: .72rem;
   font-weight: 600;
   letter-spacing: .1em;
@@ -293,6 +301,7 @@ a { color: inherit; }
   padding-inline: .15rem;
 }
 .work-name {
+  flex: none;
   font-family: var(--display);
   font-weight: 700;
   font-size: 1.02rem;
@@ -300,9 +309,11 @@ a { color: inherit; }
   color: var(--paper);
   padding-inline: .15rem;
 }
-.work-body { font-size: .9rem; line-height: 1.55; padding-inline: .15rem; opacity: .82; }
+.work-body { flex: none; font-size: .9rem; line-height: 1.55; padding-inline: .15rem; opacity: .82; }
 .go {
-  margin-block-start: .7rem;
+  flex: none;
+  margin-block-start: auto;
+  padding-block-start: .7rem;
   font-size: .88rem;
   font-weight: 600;
   color: var(--brass);
