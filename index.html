@@ -254,72 +254,46 @@ a { color: inherit; }
 .work-panel { border-radius: 1rem; padding: clamp(1.5rem, 4.5vw, 3.25rem); }
 .work-panel h2 { margin-bottom: 2.25rem; }
 
-.works {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 52rem) { .works { grid-template-columns: repeat(3, 1fr); } }
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
 
-.work {
-  display: flex;
-  flex-direction: column;
-  gap: .35rem;
-  text-decoration: none;
+.tab {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: .93rem;
+  padding: .55rem 1.1rem;
+  border: 1.5px solid rgba(211,221,229,.28);
+  border-radius: .4rem;
+  background: transparent;
   color: var(--text-light);
-  background: var(--slate-lift);
-  border: 1.5px solid rgba(211,221,229,.12);
-  border-radius: .75rem;
-  padding: .75rem .75rem 1.15rem;
-  transition: border-color .15s ease, transform .15s ease;
+  cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease, color .15s ease;
 }
-.work:hover { border-color: var(--brass); transform: translateY(-3px); }
+.tab:hover { border-color: var(--brass); }
+.tab[aria-selected="true"] { background: var(--brass); border-color: var(--brass); color: var(--slate); }
 
-.shot {
-  display: block;
-  flex: none;                 /* never let the image absorb the squeeze */
-  aspect-ratio: 16 / 10;
-  border-radius: .45rem;
-  overflow: hidden;
-  background: #0E1620;
-  margin-bottom: .9rem;
-}
-.shot img {
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  object-fit: cover;
-}
+.work-grid { display: grid; gap: 2.25rem; align-items: center; }
+@media (min-width: 58rem) { .work-grid { grid-template-columns: 1fr 1.15fr; } }
 
-.tag {
-  flex: none;
-  font-size: .72rem;
+.work-grid h3 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: .9rem; }
+.work-grid p { color: var(--text-light); margin-bottom: 1.75rem; }
+
+.eyebrow {
+  font-size: .78rem;
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--brass);
-  padding-inline: .15rem;
+  margin-bottom: .7rem;
 }
-.work-name {
-  flex: none;
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 1.02rem;
-  line-height: 1.15;
-  color: var(--paper);
-  padding-inline: .15rem;
+
+.frame {
+  border-radius: .6rem;
+  overflow: hidden;
+  border: 1.5px solid rgba(217,162,39,.35);
+  background: var(--paper);
+  aspect-ratio: 4 / 3;
 }
-.work-body { flex: none; font-size: .9rem; line-height: 1.55; padding-inline: .15rem; opacity: .82; }
-.go {
-  flex: none;
-  margin-block-start: auto;
-  padding-block-start: .7rem;
-  font-size: .88rem;
-  font-weight: 600;
-  color: var(--brass);
-  padding-inline: .15rem;
-}
-.work:hover .go { text-decoration: underline; text-underline-offset: 3px; }
+.frame iframe { inline-size: 100%; block-size: 100%; border: 0; display: block; }
 /* ============ steps ============ */
 
 .steps { list-style: none; counter-reset: step; margin: 0; padding: 0; max-width: 48rem; }
@@ -454,33 +428,25 @@ a { color: inherit; }
       <div class="honeycomb" aria-hidden="true"></div>
       <div style="position:relative">
         <h2 data-i18n="workTitle">Things I've built</h2>
-        <div class="works">
 
-          <a class="work" href="https://kris3-5.github.io/Construction-Calculator/" target="_blank" rel="noopener">
-            <span class="shot"><img src="img/calculator.webp" width="880" height="550" loading="lazy" decoding="async" alt="Construction Calculator"></span>
-            <span class="tag" data-i18n="p1Tag">Live, in use</span>
-            <span class="work-name" data-i18n="p1Name">Construction Calculator</span>
-            <span class="work-body" data-i18n="p1Body">Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up.</span>
-            <span class="go" data-i18n="openLabel">Open</span>
-          </a>
-
-          <a class="work" href="https://kris3-5.github.io/kafejnica-lase/" target="_blank" rel="noopener">
-            <span class="shot"><img src="img/lase.webp" width="880" height="550" loading="lazy" decoding="async" alt="Lāse"></span>
-            <span class="tag" data-i18n="p2Tag">Demo</span>
-            <span class="work-name" data-i18n="p2Name">Lāse — bakery and café</span>
-            <span class="work-body" data-i18n="p2Body">Today's menu, opening hours that work themselves out, and a phone number one tap away.</span>
-            <span class="go" data-i18n="openLabel">Open</span>
-          </a>
-
-          <a class="work" href="https://kris3-5.github.io/frizetava-sproga/" target="_blank" rel="noopener">
-            <span class="shot"><img src="img/sproga.webp" width="880" height="550" loading="lazy" decoding="async" alt="Sproga"></span>
-            <span class="tag" data-i18n="p3Tag">Demo</span>
-            <span class="work-name" data-i18n="p3Name">Sproga — hair salon</span>
-            <span class="work-body" data-i18n="p3Body">Visitors pick a service and hair length, and see the price and how long to book before they call.</span>
-            <span class="go" data-i18n="openLabel">Open</span>
-          </a>
-
+        <div class="tabs" role="tablist" aria-label="Projects">
+          <button class="tab" role="tab" aria-selected="true"  data-p="0">Calculator</button>
+          <button class="tab" role="tab" aria-selected="false" data-p="1">Lāse</button>
+          <button class="tab" role="tab" aria-selected="false" data-p="2">Sproga</button>
         </div>
+
+        <div class="work-grid" role="tabpanel">
+          <div>
+            <div class="eyebrow" id="pvTag">Live, in use</div>
+            <h3 id="pvName">Construction Calculator</h3>
+            <p id="pvBody">Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up.</p>
+            <a class="btn" id="pvLink" href="https://kris3-5.github.io/Construction-Calculator/" target="_blank" rel="noopener">Open</a>
+          </div>
+          <div class="frame">
+            <iframe id="pvFrame" src="https://kris3-5.github.io/Construction-Calculator/" title="Project preview" loading="lazy"></iframe>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -554,6 +520,9 @@ const COPY = {
     s4Body: "Your site works but looks dated, or falls apart on a phone. Often the cheapest thing to fix.",
     workTitle: "Things I've built",
     openLabel: "Open",
+    p1Short: "Calculator",
+    p2Short: "Lāse",
+    p3Short: "Sproga",
     p1Tag: "Live, in use",
     p1Name: "Construction Calculator",
     p1Body: "Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up.",
@@ -598,6 +567,9 @@ const COPY = {
     s4Body: "Mājaslapa strādā, bet izskatās novecojusi vai jūk ārā telefonā. Bieži vien lētākais risinājums.",
     workTitle: "Ko esmu uztaisījis",
     openLabel: "Atvērt",
+    p1Short: "Kalkulators",
+    p2Short: "Lāse",
+    p3Short: "Sproga",
     p1Tag: "Strādā jau tagad",
     p1Name: "Būvniecības kalkulators",
     p1Body: "Betona, mūrēšanas un flīzēšanas kalkulatori tiem, kas strādā objektā. Trīs valodas, metriskās vienības, bez reģistrēšanās.",
@@ -642,6 +614,9 @@ const COPY = {
     s4Body: "Сайт работает, но выглядит устаревшим или разваливается на телефоне. Часто это самое дешёвое, что можно исправить.",
     workTitle: "Что я сделал",
     openLabel: "Открыть",
+    p1Short: "Калькулятор",
+    p2Short: "Lāse",
+    p3Short: "Sproga",
     p1Tag: "Работает прямо сейчас",
     p1Name: "Строительный калькулятор",
     p1Body: "Калькуляторы бетона, кладки и плитки для тех, кто работает на объекте. Три языка, метрические единицы, без регистрации.",
@@ -686,6 +661,39 @@ function wireMail(subject) {
   if (plain) { plain.href = href; plain.textContent = ADDRESS; }
 }
 
+const PROJECTS = [
+  { key: "p1", url: "https://kris3-5.github.io/Construction-Calculator/" },
+  { key: "p2", url: "https://kris3-5.github.io/kafejnica-lase/" },
+  { key: "p3", url: "https://kris3-5.github.io/frizetava-sproga/" }
+];
+const tabs = document.querySelectorAll(".tab");
+let activeProject = 0;
+let currentLang = "en";
+
+function renderProject(i) {
+  activeProject = i;
+  const proj = PROJECTS[i];
+  const d = COPY[currentLang];
+
+  document.getElementById("pvTag").textContent  = d[proj.key + "Tag"];
+  document.getElementById("pvName").textContent = d[proj.key + "Name"];
+  document.getElementById("pvBody").textContent = d[proj.key + "Body"];
+
+  const link = document.getElementById("pvLink");
+  link.href = proj.url;
+  link.textContent = d.openLabel;
+
+  const frame = document.getElementById("pvFrame");
+  if (frame.getAttribute("src") !== proj.url) frame.setAttribute("src", proj.url);
+
+  tabs.forEach((t, idx) => {
+    t.setAttribute("aria-selected", String(idx === i));
+    t.textContent = d[PROJECTS[idx].key + "Short"];
+  });
+}
+
+tabs.forEach(t => t.addEventListener("click", () => renderProject(Number(t.dataset.p))));
+
 const buttons = document.querySelectorAll(".lang");
 const body = document.body;
 
@@ -701,6 +709,8 @@ function setLanguage(lang, animate = true) {
     document.documentElement.lang = lang;
     buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
     try { localStorage.setItem("lang", lang); } catch (e) {}
+    currentLang = lang;
+    renderProject(activeProject);
     wireMail(dict.mailSubject);
     body.classList.remove("swapping");
   };
