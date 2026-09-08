@@ -79,7 +79,7 @@ a { color: inherit; }
   inset: 0;
   background-image: url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='48.5' height='84' viewBox='0 0 48.5 84'>\
-<g fill='none' stroke='%23D9A227' stroke-width='1.1' stroke-opacity='0.16'>\
+<g fill='none' stroke='%23D9A227' stroke-width='1.1' stroke-opacity='0.11'>\
 <path d='M0,-28 L24.25,-14 L24.25,14 L0,28 L-24.25,14 L-24.25,-14Z'/>\
 <path d='M48.5,-28 L72.75,-14 L72.75,14 L48.5,28 L24.25,14 L24.25,-14Z'/>\
 <path d='M0,56 L24.25,70 L24.25,98 L0,112 L-24.25,98 L-24.25,70Z'/>\
@@ -231,11 +231,9 @@ a { color: inherit; }
 
 /* ============ services ============ */
 
-.services {
-  display: grid;
-  gap: 2.25rem 2.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-}
+.services { display: grid; gap: 2.25rem 2.5rem; grid-template-columns: 1fr; }
+@media (min-width: 40rem) { .services { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 68rem) { .services { grid-template-columns: repeat(4, 1fr); } }
 
 .service { padding-block-start: 1.5rem; border-block-start: 2px solid var(--line); }
 .service h3 { font-size: 1.2rem; margin-bottom: .6rem; }
@@ -249,36 +247,68 @@ a { color: inherit; }
   background: var(--brass-ink);
   margin-bottom: 1rem;
 }
-.service:nth-child(2) .marker { background: var(--slate); }
-.service:nth-child(3) .marker { background: var(--brass-ink); opacity: .45; }
-.service:nth-child(4) .marker { background: var(--slate); opacity: .35; }
+.service:nth-child(even) .marker { background: var(--slate); }
 
 /* ============ work ============ */
 
 .work-panel { border-radius: 1rem; padding: clamp(1.5rem, 4.5vw, 3.25rem); }
-.work-grid { display: grid; gap: 2.25rem; align-items: center; }
-@media (min-width: 58rem) { .work-grid { grid-template-columns: 1fr 1.1fr; } }
+.work-panel h2 { margin-bottom: 2.25rem; }
 
-.work-grid h3 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: .9rem; }
-.work-grid p { color: var(--text-light); margin-bottom: 1.75rem; }
+.works {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 52rem) { .works { grid-template-columns: repeat(3, 1fr); } }
 
-.eyebrow {
-  font-size: .82rem;
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  text-decoration: none;
+  color: var(--text-light);
+  background: var(--slate-lift);
+  border: 1.5px solid rgba(211,221,229,.12);
+  border-radius: .75rem;
+  padding: .75rem .75rem 1.15rem;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.work:hover { border-color: var(--brass); transform: translateY(-3px); }
+
+.shot {
+  display: block;
+  border-radius: .45rem;
+  overflow: hidden;
+  background: #0E1620;
+  margin-bottom: .9rem;
+}
+.shot img { display: block; inline-size: 100%; block-size: auto; }
+
+.tag {
+  font-size: .72rem;
   font-weight: 600;
   letter-spacing: .1em;
+  text-transform: uppercase;
   color: var(--brass);
-  margin-bottom: .75rem;
+  padding-inline: .15rem;
 }
-
-.frame {
-  border-radius: .6rem;
-  overflow: hidden;
-  border: 1.5px solid rgba(217,162,39,.35);
-  background: var(--paper);
-  aspect-ratio: 4 / 3;
+.work-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.15;
+  color: var(--paper);
+  padding-inline: .15rem;
 }
-.frame iframe { inline-size: 100%; block-size: 100%; border: 0; display: block; }
-
+.work-body { font-size: .9rem; line-height: 1.55; padding-inline: .15rem; opacity: .82; }
+.go {
+  margin-block-start: .7rem;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--brass);
+  padding-inline: .15rem;
+}
+.work:hover .go { text-decoration: underline; text-underline-offset: 3px; }
 /* ============ steps ============ */
 
 .steps { list-style: none; counter-reset: step; margin: 0; padding: 0; max-width: 48rem; }
@@ -411,15 +441,34 @@ a { color: inherit; }
   <section class="wrap section">
     <div class="dark work-panel">
       <div class="honeycomb" aria-hidden="true"></div>
-      <div class="work-grid" style="position:relative">
-        <div>
-          <div class="eyebrow" data-i18n="workEyebrow">Live, in use</div>
-          <h3 data-i18n="workName">Construction Calculator</h3>
-          <p data-i18n="workBody">Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up, and it's built to be used on a phone with cold hands.</p>
-          <a class="btn" href="https://kris3-5.github.io/Construction-Calculator/" target="_blank" rel="noopener" data-i18n="workCta">Open it</a>
-        </div>
-        <div class="frame">
-          <iframe src="https://kris3-5.github.io/Construction-Calculator/" title="Construction Calculator" loading="lazy"></iframe>
+      <div style="position:relative">
+        <h2 data-i18n="workTitle">Things I've built</h2>
+        <div class="works">
+
+          <a class="work" href="https://kris3-5.github.io/Construction-Calculator/" target="_blank" rel="noopener">
+            <span class="shot"><img src="img/calculator.webp" width="880" height="550" loading="lazy" decoding="async" alt="Construction Calculator"></span>
+            <span class="tag" data-i18n="p1Tag">Live, in use</span>
+            <span class="work-name" data-i18n="p1Name">Construction Calculator</span>
+            <span class="work-body" data-i18n="p1Body">Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up.</span>
+            <span class="go" data-i18n="openLabel">Open</span>
+          </a>
+
+          <a class="work" href="https://kris3-5.github.io/kafejnica-lase/" target="_blank" rel="noopener">
+            <span class="shot"><img src="img/lase.webp" width="880" height="550" loading="lazy" decoding="async" alt="Lāse"></span>
+            <span class="tag" data-i18n="p2Tag">Demo</span>
+            <span class="work-name" data-i18n="p2Name">Lāse — bakery and café</span>
+            <span class="work-body" data-i18n="p2Body">Today's menu, opening hours that work themselves out, and a phone number one tap away.</span>
+            <span class="go" data-i18n="openLabel">Open</span>
+          </a>
+
+          <a class="work" href="https://kris3-5.github.io/frizetava-sproga/" target="_blank" rel="noopener">
+            <span class="shot"><img src="img/sproga.webp" width="880" height="550" loading="lazy" decoding="async" alt="Sproga"></span>
+            <span class="tag" data-i18n="p3Tag">Demo</span>
+            <span class="work-name" data-i18n="p3Name">Sproga — hair salon</span>
+            <span class="work-body" data-i18n="p3Body">Visitors pick a service and hair length, and see the price and how long to book before they call.</span>
+            <span class="go" data-i18n="openLabel">Open</span>
+          </a>
+
         </div>
       </div>
     </div>
@@ -492,10 +541,17 @@ const COPY = {
     s3Body: "Customers work out a price or a quantity themselves, and you stop answering the same question by phone.",
     s4Title: "A tidy-up",
     s4Body: "Your site works but looks dated, or falls apart on a phone. Often the cheapest thing to fix.",
-    workEyebrow: "Live, in use",
-    workName: "Construction Calculator",
-    workBody: "Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up, and it's built to be used on a phone with cold hands.",
-    workCta: "Open it",
+    workTitle: "Things I've built",
+    openLabel: "Open",
+    p1Tag: "Live, in use",
+    p1Name: "Construction Calculator",
+    p1Body: "Concrete, masonry and tiling calculators for people working on site. Three languages, metric units, no sign-up.",
+    p2Tag: "Demo",
+    p2Name: "Lāse — bakery and café",
+    p2Body: "Today's menu, opening hours that work themselves out, and a phone number one tap away.",
+    p3Tag: "Demo",
+    p3Name: "Sproga — hair salon",
+    p3Body: "Visitors pick a service and hair length, and see the price and how long to book before they call.",
     howTitle: "How it works",
     h1Title: "You tell me what it needs to say",
     h1Body: "An email is enough. What you do, who you do it for, and anything you already know you want on the page.",
@@ -529,10 +585,17 @@ const COPY = {
     s3Body: "Klienti paši aprēķina cenu vai daudzumu, un jums vairs nav pa telefonu jāatbild uz vienu un to pašu jautājumu.",
     s4Title: "Sakārtošana",
     s4Body: "Mājaslapa strādā, bet izskatās novecojusi vai jūk ārā telefonā. Bieži vien lētākais risinājums.",
-    workEyebrow: "Strādā jau tagad",
-    workName: "Būvniecības kalkulators",
-    workBody: "Betona, mūrēšanas un flīzēšanas kalkulatori tiem, kas strādā objektā. Trīs valodas, metriskās vienības, bez reģistrēšanās, un veidots lietošanai telefonā ar aukstām rokām.",
-    workCta: "Atvērt",
+    workTitle: "Ko esmu uztaisījis",
+    openLabel: "Atvērt",
+    p1Tag: "Strādā jau tagad",
+    p1Name: "Būvniecības kalkulators",
+    p1Body: "Betona, mūrēšanas un flīzēšanas kalkulatori tiem, kas strādā objektā. Trīs valodas, metriskās vienības, bez reģistrēšanās.",
+    p2Tag: "Paraugs",
+    p2Name: "Lāse — ceptuve un kafejnīca",
+    p2Body: "Dienas piedāvājums, darba laiks, kas aprēķinās pats, un telefona numurs vienā pieskārienā.",
+    p3Tag: "Paraugs",
+    p3Name: "Sproga — frizētava",
+    p3Body: "Apmeklētājs izvēlas pakalpojumu un matu garumu un redz cenu un vajadzīgo laiku vēl pirms zvana.",
     howTitle: "Kā tas notiek",
     h1Title: "Jūs pastāstāt, kas lapā jāpasaka",
     h1Body: "Pietiek ar e-pastu. Ko darāt, kam to darāt un ko jau tagad zināt, ka lapā vajadzētu būt.",
@@ -566,10 +629,17 @@ const COPY = {
     s3Body: "Клиенты сами считают цену или количество, и вам больше не приходится отвечать по телефону на один и тот же вопрос.",
     s4Title: "Привести в порядок",
     s4Body: "Сайт работает, но выглядит устаревшим или разваливается на телефоне. Часто это самое дешёвое, что можно исправить.",
-    workEyebrow: "Работает прямо сейчас",
-    workName: "Строительный калькулятор",
-    workBody: "Калькуляторы бетона, кладки и плитки для тех, кто работает на объекте. Три языка, метрические единицы, без регистрации, и рассчитан на работу с телефона замёрзшими руками.",
-    workCta: "Открыть",
+    workTitle: "Что я сделал",
+    openLabel: "Открыть",
+    p1Tag: "Работает прямо сейчас",
+    p1Name: "Строительный калькулятор",
+    p1Body: "Калькуляторы бетона, кладки и плитки для тех, кто работает на объекте. Три языка, метрические единицы, без регистрации.",
+    p2Tag: "Демо",
+    p2Name: "Lāse — пекарня и кафе",
+    p2Body: "Меню дня, часы работы, которые считаются сами, и телефон в одно касание.",
+    p3Tag: "Демо",
+    p3Name: "Sproga — парикмахерская",
+    p3Body: "Посетитель выбирает услугу и длину волос и видит цену и нужное время ещё до звонка.",
     howTitle: "Как это происходит",
     h1Title: "Вы рассказываете, что должно быть на сайте",
     h1Body: "Достаточно письма. Чем вы занимаетесь, для кого, и что уже точно должно быть на странице.",
